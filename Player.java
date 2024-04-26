@@ -14,14 +14,16 @@ public class Player extends Actor
     private Integer state;
     private Integer direction;
     private Controller controller;
-    private Animator animator;
+    private PlayerAnimator animator;
+    private Integer score;
     
     public Player(){
         super();
         this.state = 0;
         this.direction = 1;
         this.controller = new Controller(this);
-        this.animator = new Animator(this);
+        this.animator = new PlayerAnimator(this);
+        this.score = 0;
         
     }
     
@@ -30,9 +32,10 @@ public class Player extends Actor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public void act(){
-        System.out.println(direction);
+        System.out.println(getX());
         controller.control();
         animator.animate();
+        touchedCoin();
     }
     
     public Actor onTopOf(){
@@ -49,14 +52,35 @@ public class Player extends Actor
         
         return under instanceof GroundTile;
     }
+    
+    public boolean isFrontallyColliding() {
+        Actor inFront = getOneObjectAtOffset(16*direction, 0, GroundTile.class);
+        return inFront != null;
+    }
+    
+    public boolean headIsColliding() {
+        Actor onTop = getOneObjectAtOffset(0, -16, GroundTile.class);
+        return onTop != null;
+    }
 
-     public void setOnGround(){
+    public void setOnGround(){
         Actor under = onTopOf();
         if(under != null){
             setLocation(
                 getX(), 
                 under.getY() - getImage().getWidth()/2 - under.getImage().getWidth()/2);
         }
+    }
+    
+    private void touchedCoin(){
+        Actor touching = getOneIntersectingObject(Coin.class);
+        
+        if(touching!=null){
+            score++;
+            getWorld().removeObject(touching);
+        }
+        
+        
     }
     
     public void updatePlayerLocation(Integer x, Integer y){
@@ -77,6 +101,10 @@ public class Player extends Actor
     
     public void setDirection(Integer newDirection) {
         this.direction = newDirection;
+    }
+    
+    public Integer getScore(){
+        return this.score;
     }
     
 }

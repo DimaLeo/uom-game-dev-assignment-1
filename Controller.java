@@ -43,13 +43,6 @@ public class Controller
     }
     
     private void controlPlayerInputs(){
-        String keyPressed = Greenfoot.getKey();
-        
-        if(keyPressed != null){
-            if(keyPressed.equals("space") || keyPressed.equals("w")){
-                if(doubleJumpCounter>0) jump();        
-            }
-        }
         
         if (Greenfoot.isKeyDown("d")){
             this.dIsPressed = true;
@@ -67,13 +60,20 @@ public class Controller
             this.aIsPressed = true;
             player.setState(player.grounded()? 3 : player.getState());
             player.setDirection(-1);
-            System.out.println(player.getDirection());
             run();
         }
         
         if(!Greenfoot.isKeyDown("a") && this.aIsPressed){
             this.aIsPressed = false;
             player.setState(0);
+        }
+        
+        String keyPressed = Greenfoot.getKey();
+        
+        if(keyPressed != null){
+            if(keyPressed.equals("space") || keyPressed.equals("w")){
+                if(doubleJumpCounter>0) jump();        
+            }
         }
     }
     
@@ -82,7 +82,13 @@ public class Controller
     }
     
     private void run(){
-        player.updatePlayerLocation(player.getX() + xSpeed * player.getDirection(), player.getY());
+        Integer movementSpeed = xSpeed;
+        
+        if(player.isFrontallyColliding() || (player.getX()< 0+16 && player.getDirection() == -1)){
+            movementSpeed = 0;
+        }
+        
+        player.updatePlayerLocation(player.getX() + movementSpeed * player.getDirection(), player.getY());
     }
     
     private void jump() {
@@ -92,9 +98,17 @@ public class Controller
     }
     
     private void gravity() {
+        
         if(ySpeed<0 || !player.grounded()){
-            this.ySpeed += g;
-            if(this.ySpeed == 0){
+            
+            if(player.headIsColliding()){
+                this.ySpeed = 1;
+                this.doubleJumpCounter = 0;
+                player.setState(2);
+            }
+            else this.ySpeed += g;
+            
+            if(this.ySpeed == 0 && player.getState() == 1){
                 //if the player was rising and reached the top spot of the jump ySpeed = 0, then he starts falling
                 player.setState(2);
             }
@@ -109,8 +123,6 @@ public class Controller
             //will also need to check if is moving state isMoving? 3: 0
             player.setState(0);
         }
-        
-        
     }
     
    
