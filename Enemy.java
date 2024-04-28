@@ -10,8 +10,8 @@ public abstract class Enemy extends NonPlayerCharacter
 {
     private MovableActorAnimator animator;
     
-    public Enemy(String prefix){
-        super();
+    public Enemy(String prefix, Integer moveAmount){
+        super(moveAmount);
         this.animator = new MovableActorAnimator(this, prefix, false);
 
     }

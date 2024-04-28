@@ -17,15 +17,16 @@ public class ScrollingWorld extends World
     private Integer score = 0;
     private ArrayList<GuiElement> scoreDigits = new ArrayList<>();
     private ArrayList<GuiElement> healthIndicators = new ArrayList<>();
+    private Integer numberOfCoins = 0;
     
     Scroller scroller;
     Player scrollActor;
     
-    public ScrollingWorld() 
+    public ScrollingWorld(String background_image) 
     {
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(WIDTH, HEIGHT, 1, false);
-        GreenfootImage background = new GreenfootImage("images.jpeg");
+        GreenfootImage background = new GreenfootImage(background_image);
         Integer backgroundHeight = background.getHeight();
         Integer backgroundWidth = background.getWidth();
         scroller = new Scroller(this, background, 3200, 400);
@@ -135,5 +136,13 @@ public class ScrollingWorld extends World
     
     public Scroller getScroller(){
         return this.scroller;
+    }
+    
+    public Integer getNumberOfCoins(){
+        return this.numberOfCoins;
+    }
+    
+    public void setNumberOfCoins(int numberOfCoins){
+        this.numberOfCoins = numberOfCoins;
     }
 }

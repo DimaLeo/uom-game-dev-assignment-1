@@ -29,7 +29,6 @@ public class Player extends Actor
         this.score = 0;
         this.lastCheckpointPosition = 32;
         this.health = 3;
-        
     }
     
     /**
@@ -37,6 +36,13 @@ public class Player extends Actor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public void act(){
+        
+        ScrollingWorld world = (ScrollingWorld) getWorld();
+        
+        if(world.getNumberOfCoins() == 0){
+            world.setNumberOfCoins(world.getObjects(Coin.class).size());
+        }
+        nextLevelCheckpointReached();
         reachedCheckpoint();
         controller.control();
         animator.animate();
@@ -118,6 +124,16 @@ public class Player extends Actor
             lastCheckpointPosition = world.getScroller().getScrolledX();
         }
     }
+    
+    private void nextLevelCheckpointReached() {
+        Actor checkpoint = getOneIntersectingObject(NextLevelCheckpoint.class);
+        
+        ScrollingWorld world = (ScrollingWorld) getWorld();
+        
+        if(checkpoint != null) Greenfoot.setWorld(new LevelCompleteScreen(score, world.getNumberOfCoins(), 3-health));  
+            
+    }
+    
     
     public void updatePlayerLocation(Integer x, Integer y){
         setLocation(x,y);

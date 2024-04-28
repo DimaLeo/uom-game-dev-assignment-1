@@ -10,12 +10,18 @@ public abstract class NonPlayerCharacter extends Actor
 {
     private Integer direction = 1;
     private Integer state = 0;
-    private Integer patrolTimer = 400;
+    private Integer patrolTime;
+    private Integer patrolCurrentTimer;
     private Integer patrolSpeed = 1;
     private Integer attackSpeed = 3;
     private Integer initialPosition = 0;
     private Integer randomDirectionChangeTimer = 30;
     private Integer idleOnDirectionChangeTimer = 100;
+    
+    public NonPlayerCharacter(Integer patrolTimer){
+        this.patrolTime = patrolTimer;
+        this.patrolCurrentTimer = patrolTimer;
+    }
     
     public Integer getDirection(){
         return this.direction;
@@ -42,13 +48,13 @@ public abstract class NonPlayerCharacter extends Actor
             idleOnDirectionChangeTimer--;
         }
         else{
-            if(patrolTimer == 0){
-                patrolTimer = 400;
+            if(patrolCurrentTimer == 0){
+                patrolCurrentTimer = this.patrolTime;
                 direction *= -1;
                 idleOnDirectionChangeTimer = 100;
                 
             }
-            else patrolTimer --;
+            else patrolCurrentTimer --;
             
             state = 3;
             

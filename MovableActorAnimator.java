@@ -1,5 +1,7 @@
 import greenfoot.*;
 import java.util.ArrayList;
+import java.io.FilenameFilter;
+import java.io.File;
 
 public class MovableActorAnimator  
 {
@@ -24,6 +26,19 @@ public class MovableActorAnimator
      * Constructor for objects of class Animator
      */
     public MovableActorAnimator(NonPlayerCharacter character, String prefix, Boolean canJump){
+        File root = new File("./images");
+        Integer idle_frames = root.listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.startsWith(prefix+"_idle") && name.endsWith(".png");
+            }
+        }).length;
+        
+        Integer run_frames = root.listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.startsWith(prefix+"_run") && name.endsWith(".png");
+            }
+        }).length;
+        
         this.character = character;
         this.canJump = canJump;
         
@@ -36,23 +51,23 @@ public class MovableActorAnimator
             this.fallImageLeft.mirrorHorizontally();
         }
         
-        
-        for( int i=0; i<11; i++ ) {
+        for( int i=0; i<idle_frames; i++ ) {
             idleImagesLeft.add(new GreenfootImage(prefix+"_idle_" + i + ".png"));
         }
         
-        for( int i=0; i<11; i++ ) {
+        
+        for( int i=0; i<idle_frames; i++ ) {
             GreenfootImage img = new GreenfootImage(prefix+"_idle_" + i + ".png");
             img.mirrorHorizontally();
             idleImagesRight.add(img);
             
         }
         
-        for( int i=0; i<12; i++ ) {
+        for( int i=0; i<run_frames; i++ ) {
             runningImagesLeft.add(new GreenfootImage(prefix+"_run_" + i + ".png"));
         }
         
-        for( int i=0; i<12; i++ ) {
+        for( int i=0; i<run_frames; i++ ) {
             GreenfootImage img = new GreenfootImage(prefix+"_run_" + i + ".png");
             img.mirrorHorizontally();
             runningImagesRight.add(img);

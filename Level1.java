@@ -16,12 +16,9 @@ public class Level1 extends ScrollingWorld
     private final Integer playerTileWidth = 32;
     private final Integer groundHeight = tile16Px*3;
     
-    private ArrayList<ArrayList<GroundTile>> groundTiles = 
-        new ArrayList();
-    
     public Level1()
     {
-        super();
+        super("images.jpeg");
         prepare();
     }
     
@@ -150,7 +147,7 @@ public class Level1 extends ScrollingWorld
         addObject(new Checkpoint(), 1750, super.getHeight() - groundHeight -24);
         
         
-        addObject(new Enemy1(), 1800, super.getHeight() - groundHeight - 23);
+        addObject(new Enemy1(400), 1800, super.getHeight() - groundHeight - 23);
         
         lineOfBoxes(15, 2200, 100);
         coinsInArow(8, 40, 2180,  70);
@@ -171,10 +168,7 @@ public class Level1 extends ScrollingWorld
         lineOfBoxes(3, 2300, 300);
         coinsInArow(2, 40, 2270, 270);
         
-
-
-        
-
+        addObject(new Enemy2(400), 2650, super.getHeight() - groundHeight - 16);
         
         addObject(new NextLevelCheckpoint(), 3200-32, getHeight() - groundHeight - 24);
     }

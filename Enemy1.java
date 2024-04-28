@@ -9,10 +9,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Enemy1 extends Enemy
 {
     
-    
-    
-    public Enemy1(){
-        super("enemy_1");
+    public Enemy1(Integer moveAmount){
+        super("enemy_1", moveAmount);
     }
     
     
