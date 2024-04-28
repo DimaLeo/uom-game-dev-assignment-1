@@ -12,15 +12,16 @@ import greenfoot.Actor;
 public class GuiElement extends Actor
 {
     // instance variables - replace the example below with your own
-    private GreenfootImage characterImage;
+    private GreenfootImage elementImage;
 
     /**
      * Constructor for objects of class GUI
      */
-    public GuiElement(String letter)
+    public GuiElement(String prefix)
     {
-        this.characterImage = new GreenfootImage(letter+".png");
-        this.characterImage.scale(characterImage.getWidth()*2, characterImage.getHeight()*2);
-        setImage(characterImage);
+        this.elementImage = new GreenfootImage(prefix+".png");
+        this.elementImage.scale(elementImage.getWidth()*2, elementImage.getHeight()*2);
+        
+        setImage(elementImage);
     }
 }

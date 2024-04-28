@@ -16,6 +16,9 @@ public class Player extends Actor
     private Controller controller;
     private PlayerAnimator animator;
     private Integer score;
+    private Integer lastCheckpointPosition;
+    private Integer health;
+    
     
     public Player(){
         super();
@@ -24,6 +27,8 @@ public class Player extends Actor
         this.controller = new Controller(this);
         this.animator = new PlayerAnimator(this);
         this.score = 0;
+        this.lastCheckpointPosition = 32;
+        this.health = 3;
         
     }
     
@@ -32,19 +37,37 @@ public class Player extends Actor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public void act(){
-        System.out.println(getX());
+        reachedCheckpoint();
         controller.control();
         animator.animate();
         touchedCoin();
+        hitByEnemy();
+        
     }
     
     public Actor onTopOf(){
         return getOneObjectAtOffset(0, 16, GroundTile.class);
     }
+
     
     public boolean landed(){
         Actor under = onTopOf();
         return (state == 1 || state == 2) && under != null;
+    }
+
+    public boolean landedOnEnemy(){
+        Actor enemy = getOneObjectAtOffset(0, 16, NonPlayerCharacter.class);
+        getWorld().removeObject(enemy);
+        return enemy!=null;
+    }
+    
+    public void hitByEnemy() {
+        Actor enemy = getOneObjectAtOffset(0, 0, NonPlayerCharacter.class);
+        if(enemy != null){
+            ScrollingWorld world = (ScrollingWorld) getWorld();
+            setLocation(lastCheckpointPosition - world.getScroller().getScrolledX() +100, getY());
+            this.health --;
+        }
     }
     
     public boolean grounded() {
@@ -65,10 +88,11 @@ public class Player extends Actor
 
     public void setOnGround(){
         Actor under = onTopOf();
+        
         if(under != null){
             setLocation(
                 getX(), 
-                under.getY() - getImage().getWidth()/2 - under.getImage().getWidth()/2);
+                under.getY() - getImage().getHeight()/2 - under.getImage().getHeight()/2+1);
         }
     }
     
@@ -81,6 +105,18 @@ public class Player extends Actor
         }
         
         
+    }
+    
+    private void reachedCheckpoint() {
+        Actor checkpoint = getOneIntersectingObject(Checkpoint.class);
+        
+        ScrollingWorld world = (ScrollingWorld) getWorld();
+        
+        if(checkpoint != null 
+            && lastCheckpointPosition != world.getScroller().getScrolledX() 
+            && lastCheckpointPosition<world.getScroller().getScrolledX()) {
+            lastCheckpointPosition = world.getScroller().getScrolledX();
+        }
     }
     
     public void updatePlayerLocation(Integer x, Integer y){
@@ -105,6 +141,10 @@ public class Player extends Actor
     
     public Integer getScore(){
         return this.score;
+    }
+    
+    public Integer getHealth(){
+        return this.health;
     }
     
 }

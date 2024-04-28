@@ -28,11 +28,11 @@ public class Controller
         this.aIsPressed = false;
         this.doubleJumpCounter = 2;
         
-        this.jumpForce = -12;
-        this.ySpeed = 0;
+        this.jumpForce = -11;
+        this.ySpeed = 3;
         this.g = 1;
         
-        this.xSpeed = 4;
+        this.xSpeed = 2;
         
         
     }
@@ -111,6 +111,10 @@ public class Controller
             if(this.ySpeed == 0 && player.getState() == 1){
                 //if the player was rising and reached the top spot of the jump ySpeed = 0, then he starts falling
                 player.setState(2);
+            }
+            
+            if(player.landedOnEnemy()) {
+                ySpeed = jumpForce;
             }
             
             player.updatePlayerLocation(player.getX(), player.getY() + ySpeed);

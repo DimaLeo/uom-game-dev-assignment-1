@@ -1,9 +1,11 @@
 import greenfoot.*;
 import java.util.ArrayList;
 
-public class PlayerAnimator  
+public class MovableActorAnimator  
 {
-    Player player;
+    NonPlayerCharacter character;
+    
+    private Boolean canJump;
     
     private ArrayList<GreenfootImage> idleImagesRight = new ArrayList();
     private ArrayList<GreenfootImage> idleImagesLeft = new ArrayList();
@@ -21,50 +23,54 @@ public class PlayerAnimator
     /**
      * Constructor for objects of class Animator
      */
-    public PlayerAnimator(Player player){
-        this.player = player;
+    public MovableActorAnimator(NonPlayerCharacter character, String prefix, Boolean canJump){
+        this.character = character;
+        this.canJump = canJump;
         
-        this.jumpImageRight = new GreenfootImage("Jump.png");
-        this.fallImageRight = new GreenfootImage("Fall.png");
-        this.jumpImageLeft = new GreenfootImage("Jump.png");
-        this.jumpImageLeft.mirrorHorizontally();
-        this.fallImageLeft = new GreenfootImage("Fall.png");
-        this.fallImageLeft.mirrorHorizontally();
+        if(canJump){
+            this.jumpImageRight = new GreenfootImage("Jump.png");
+            this.fallImageRight = new GreenfootImage("Fall.png");
+            this.jumpImageLeft = new GreenfootImage("Jump.png");
+            this.jumpImageLeft.mirrorHorizontally();
+            this.fallImageLeft = new GreenfootImage("Fall.png");
+            this.fallImageLeft.mirrorHorizontally();
+        }
+        
         
         for( int i=0; i<11; i++ ) {
-            idleImagesRight.add(new GreenfootImage("mc_idle_0" + i + ".png"));
+            idleImagesLeft.add(new GreenfootImage(prefix+"_idle_" + i + ".png"));
         }
         
         for( int i=0; i<11; i++ ) {
-            GreenfootImage img = new GreenfootImage("mc_idle_0" + i + ".png");
+            GreenfootImage img = new GreenfootImage(prefix+"_idle_" + i + ".png");
             img.mirrorHorizontally();
-            idleImagesLeft.add(img);
+            idleImagesRight.add(img);
             
         }
         
         for( int i=0; i<12; i++ ) {
-            runningImagesRight.add(new GreenfootImage("mc_run_" + i + ".png"));
+            runningImagesLeft.add(new GreenfootImage(prefix+"_run_" + i + ".png"));
         }
         
         for( int i=0; i<12; i++ ) {
-            GreenfootImage img = new GreenfootImage("mc_run_" + i + ".png");
+            GreenfootImage img = new GreenfootImage(prefix+"_run_" + i + ".png");
             img.mirrorHorizontally();
-            runningImagesLeft.add(img);
+            runningImagesRight.add(img);
             
         }
     }
     
     public void animate() {
         
-        switch(player.getState()){
+        switch(character.getState()){
             case 0:
                 animateIdle();
                 break;
             case 1:
-                animateJump();
+                if(canJump) animateJump();
                 break;
             case 2:
-                animateFall();
+                if(canJump) animateFall();
                 break;
             case 3:
                 animateRun();
@@ -73,11 +79,11 @@ public class PlayerAnimator
     }
     
     public void animateJump() {
-        handleSingleImageAnimation(player.getDirection() == 1? this.jumpImageRight: this.jumpImageLeft);
+        handleSingleImageAnimation(character.getDirection() == 1? this.jumpImageRight: this.jumpImageLeft);
     }
     
     public void animateFall() {
-        handleSingleImageAnimation(player.getDirection() == 1? this.fallImageRight: this.fallImageLeft);
+        handleSingleImageAnimation(character.getDirection() == 1? this.fallImageRight: this.fallImageLeft);
     }
     
     public void animateRun() {
@@ -90,11 +96,11 @@ public class PlayerAnimator
                 runningImageNumber = 0;
             }
             
-            if(player.getDirection() == 1){
-                player.setImage(this.runningImagesRight.get(runningImageNumber));
+            if(character.getDirection() == 1){
+                character.setImage(this.runningImagesRight.get(runningImageNumber));
             }
             else{
-                player.setImage(this.runningImagesLeft.get(runningImageNumber));
+                character.setImage(this.runningImagesLeft.get(runningImageNumber));
             }
             
             this.runningImageNumber++;
@@ -114,11 +120,11 @@ public class PlayerAnimator
                 idleImageNumber = 0;
             }
             
-            if(player.getDirection() == 1){
-                player.setImage(idleImagesRight.get(idleImageNumber));
+            if(character.getDirection() == 1){
+                character.setImage(idleImagesRight.get(idleImageNumber));
             }
             else{
-                player.setImage(idleImagesLeft.get(idleImageNumber));
+                character.setImage(idleImagesLeft.get(idleImageNumber));
             }
             
             this.idleImageNumber++;
@@ -130,6 +136,7 @@ public class PlayerAnimator
     }
     
     public void handleSingleImageAnimation(GreenfootImage image){
-        player.setImage(image);
+        character.setImage(image);
     }
+    
 }

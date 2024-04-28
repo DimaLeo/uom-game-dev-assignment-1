@@ -10,13 +10,13 @@ public class Coin extends Collectible
 {
     private String prefix = "coin_";
     private Integer noOfFrames = 7;
-    private ObjectsAnimator animator;
+    private StaticActorAnimator animator;
     private Integer scale = 2;
 
     
     public Coin(){
         
-        this.animator = new ObjectsAnimator(prefix, noOfFrames, this, scale);
+        this.animator = new StaticActorAnimator(prefix, noOfFrames, this, scale);
     }
     
     public void act()

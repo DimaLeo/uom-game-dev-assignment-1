@@ -14,6 +14,7 @@ public class Level1 extends ScrollingWorld
     private final Integer tile16Px = 16;
     private final Integer tile32Px = 32;
     private final Integer playerTileWidth = 32;
+    private final Integer groundHeight = tile16Px*3;
     
     private ArrayList<ArrayList<GroundTile>> groundTiles = 
         new ArrayList();
@@ -60,13 +61,52 @@ public class Level1 extends ScrollingWorld
         
     }
     
+    private void lineOfBoxes(Integer numberOfBoxes, Integer startingX, Integer y){
+        
+        for(int i=0; i<numberOfBoxes; i++){
+            addObject(new Box(), startingX+i*tile22Px, y);
+        }
+        
+    }
+    
+    private void stackOfBoxes(Integer numberOfBoxes, Integer x, Integer startingY){
+        
+        for(int i=0; i<numberOfBoxes; i++){
+            addObject(new Box(), x, startingY-i*tile22Px);
+        }
+        
+    }
+    
+    private void boxesRectangle(Integer cols, Integer rows, Integer startingX, Integer startingY){
+        
+        for(int i = 0; i<cols; i++){
+            
+            for(int j = 0; j<rows; j++){
+                addObject(new Box(), startingX+i*tile22Px, startingY-j*tile22Px);
+            }
+        }
+        
+    }
+    
+    private void coinsInArow(Integer numberOfCoins, Integer spaceBetween, Integer startingX, Integer y){
+        for(int i=0; i<numberOfCoins; i++){
+            addObject(new Coin(), startingX+i*spaceBetween +tile32Px, y);
+        }
+    }
+    
+    private void stackOfCoins(Integer numberOfCoins, Integer spaceBetween, Integer startingY, Integer x){
+        for(int i=0; i<numberOfCoins; i++){
+            addObject(new Coin(), x, startingY - i*spaceBetween -tile32Px);
+        }
+    }
+    
     /**
      * Prepare the world for the start of the program.
      * That is: create the initial objects and add them to the world.
      */
     private void prepare()
     {
-        //Player player = new Player();
+        Player player = new Player();
         Integer numberOfTiles = 3200/16;
         
         groundTileConstructor(0, 0);
@@ -75,85 +115,67 @@ public class Level1 extends ScrollingWorld
             groundTileConstructor(i,1);
         }
             
-        //addObject(player, 16, super.getHeight()-3*tile16Px-playerTileWidth/2);
-        
-        new Tip("A: move left\n"+
+        addObject(player, 16, super.getHeight()-groundHeight-playerTileWidth/2);
+        super.setScrollActor(player);
+                
+        new TextElement("A: move left\n"+
                 "D: move right\n", this, 32);
                 
-        new Tip("W or Space: jump\n", this, 450);
+        new TextElement("W or Space: jump\n", this, 450);
         
-        new Tip("W or Space Twice: double jump\n", this, 830);
+        new TextElement("W or Space Twice: double jump\n", this, 800);
         
-        new Tip("Collect coins\n"+
+        new TextElement("Collect coins\n"+
                 "to increase your score", this, 1300);
                 
-        new Tip("Do not touch enemies head on\n"+
-                "Jump on them to deal damage", this, 1800);
+        new TextElement("Do not touch enemies head on\n"+
+                "Jump on them to deal damage", this, 1700);
+    
                     
-        addObject(new Box(), 500-tile22Px, super.getHeight()-3*tile16Px-tile22Px/2);
-        addObject(new Box(), 500, super.getHeight()-3*tile16Px-tile22Px/2);
-        addObject(new Box(), 500+tile22Px, super.getHeight()-3*tile16Px-tile22Px/2);
-        addObject(new Box(), 500+tile22Px, super.getHeight()-3*tile16Px-tile22Px-tile22Px/2);
-        addObject(new Box(), 500+tile22Px, super.getHeight()-3*tile16Px-2*tile22Px-tile22Px/2);
-        addObject(new Box(), 500+tile22Px, super.getHeight()-3*tile16Px-3*tile22Px-tile22Px/2);
-        addObject(new Box(), 500+2*tile22Px, super.getHeight()-3*tile16Px-tile22Px/2);
-        addObject(new Box(), 500+2*tile22Px, super.getHeight()-3*tile16Px-tile22Px-tile22Px/2);
-        addObject(new Box(), 500+2*tile22Px, super.getHeight()-3*tile16Px-2*tile22Px-tile22Px/2);
-        addObject(new Box(), 500+2*tile22Px, super.getHeight()-3*tile16Px-3*tile22Px-tile22Px/2);
+                
+        boxesRectangle(3, 1, 400, super.getHeight()-groundHeight-tile22Px/2);
+        boxesRectangle(3,3, 500, super.getHeight()-groundHeight-tile22Px/2);
+        boxesRectangle(3,5, 600, super.getHeight()-groundHeight-tile22Px/2);
         
-        addObject(new Box(), 550+tile22Px, super.getHeight()-3*tile16Px-tile22Px/2);
-        addObject(new Box(), 550+tile22Px, super.getHeight()-3*tile16Px-tile22Px-tile22Px/2);
-        addObject(new Box(), 550+2*tile22Px, super.getHeight()-3*tile16Px-tile22Px/2);
-        addObject(new Box(), 550+2*tile22Px, super.getHeight()-3*tile16Px-tile22Px-tile22Px/2);
-        addObject(new Box(), 550+3*tile22Px, super.getHeight()-3*tile16Px-tile22Px/2);
-        addObject(new Box(), 550+3*tile22Px, super.getHeight()-3*tile16Px-tile22Px-tile22Px/2);
         
-        addObject(new Box(), 850+tile22Px, super.getHeight()-3*tile16Px-tile22Px/2);
-        addObject(new Box(), 850+tile22Px, super.getHeight()-3*tile16Px-tile22Px-tile22Px/2);
-        addObject(new Box(), 850+tile22Px, super.getHeight()-3*tile16Px-2*tile22Px-tile22Px/2);
-        addObject(new Box(), 850+tile22Px, super.getHeight()-3*tile16Px-3*tile22Px-tile22Px/2);
+        stackOfBoxes(4, 850, super.getHeight()-groundHeight-tile22Px/2);
+        stackOfBoxes(4, 1000, super.getHeight()-groundHeight-tile22Px/2);
+        stackOfBoxes(4, 1150, super.getHeight()-groundHeight-tile22Px/2);
         
-        addObject(new Box(), 1000+tile22Px, super.getHeight()-3*tile16Px-tile22Px/2);
-        addObject(new Box(), 1000+tile22Px, super.getHeight()-3*tile16Px-tile22Px-tile22Px/2);
-        addObject(new Box(), 1000+tile22Px, super.getHeight()-3*tile16Px-2*tile22Px-tile22Px/2);
-        addObject(new Box(), 1000+tile22Px, super.getHeight()-3*tile16Px-3*tile22Px-tile22Px/2);
         
-        addObject(new Box(), 1150+tile22Px, super.getHeight()-3*tile16Px-tile22Px/2);
-        addObject(new Box(), 1150+tile22Px, super.getHeight()-3*tile16Px-tile22Px-tile22Px/2);
-        addObject(new Box(), 1150+tile22Px, super.getHeight()-3*tile16Px-2*tile22Px-tile22Px/2);
-        addObject(new Box(), 1150+tile22Px, super.getHeight()-3*tile16Px-3*tile22Px-tile22Px/2);
+        coinsInArow(8, 40, 1360,  super.getHeight() - groundHeight - tile32Px/2 - 6);
+        lineOfBoxes(15, 1378, super.getHeight() - groundHeight - 80);
+        coinsInArow(8, 40, 1360,  super.getHeight() - groundHeight - tile32Px/2 - 96);
         
-        addObject(new Coin(), 1400, super.getHeight() - 3*tile16Px - tile32Px/2 - 6);
-        addObject(new Coin(), 1450, super.getHeight() - 3*tile16Px - tile32Px/2 - 6);
-        addObject(new Coin(), 1500, super.getHeight() - 3*tile16Px - tile32Px/2 - 6);
-        addObject(new Coin(), 1550, super.getHeight() - 3*tile16Px - tile32Px/2 - 6);
-        addObject(new Coin(), 1600, super.getHeight() - 3*tile16Px - tile32Px/2 - 6);
-        addObject(new Coin(), 1650, super.getHeight() - 3*tile16Px - tile32Px/2 - 6);
+        addObject(new Checkpoint(), 1750, super.getHeight() - groundHeight -24);
         
-        addObject(new Box(), 1400-tile22Px, super.getHeight() - 3*tile16Px - 100);
-        addObject(new Box(), 1400, super.getHeight() - 3*tile16Px - 100);
-        addObject(new Box(), 1400 + tile22Px, super.getHeight() - 3*tile16Px - 100);
-        addObject(new Box(), 1400 + tile22Px*2, super.getHeight() - 3*tile16Px - 100);
-        addObject(new Box(), 1400 + tile22Px*3, super.getHeight() - 3*tile16Px - 100);
-        addObject(new Box(), 1400 + tile22Px*4, super.getHeight() - 3*tile16Px - 100);
-        addObject(new Box(), 1400 + tile22Px*5, super.getHeight() - 3*tile16Px - 100);
-        addObject(new Box(), 1400 + tile22Px*6, super.getHeight() - 3*tile16Px - 100);
-        addObject(new Box(), 1400 + tile22Px*7, super.getHeight() - 3*tile16Px - 100);
-        addObject(new Box(), 1400 + tile22Px*8, super.getHeight() - 3*tile16Px - 100);
-        addObject(new Box(), 1400 + tile22Px*9, super.getHeight() - 3*tile16Px - 100);
-        addObject(new Box(), 1400 + tile22Px*10, super.getHeight() - 3*tile16Px - 100);
-        addObject(new Box(), 1400 + tile22Px*11, super.getHeight() - 3*tile16Px - 100);
-        addObject(new Box(), 1400 + tile22Px*12, super.getHeight() - 3*tile16Px - 100);
-        addObject(new Box(), 1400 + tile22Px*13, super.getHeight() - 3*tile16Px - 100);
         
-        addObject(new Coin(), 1400, super.getHeight() - 3*tile16Px - tile32Px/2 - 116);
-        addObject(new Coin(), 1450, super.getHeight() - 3*tile16Px - tile32Px/2 - 116);
-        addObject(new Coin(), 1500, super.getHeight() - 3*tile16Px - tile32Px/2 - 116);
-        addObject(new Coin(), 1550, super.getHeight() - 3*tile16Px - tile32Px/2 - 116);
-        addObject(new Coin(), 1600, super.getHeight() - 3*tile16Px - tile32Px/2 - 116);
-        addObject(new Coin(), 1650, super.getHeight() - 3*tile16Px - tile32Px/2 - 116);
+        addObject(new Enemy1(), 1800, super.getHeight() - groundHeight - 23);
+        
+        lineOfBoxes(15, 2200, 100);
+        coinsInArow(8, 40, 2180,  70);
+         
+        addObject(new Platform(100, getHeight()-groundHeight-11), 2200-46, super.getHeight() - groundHeight - 11 );
+        stackOfCoins(5, 40, super.getHeight() -groundHeight - 30, 2200-46);
+        
+        
+        lineOfBoxes(3, 2600, 160);
+        coinsInArow(2, 40, 2570, 130);
+        
+        lineOfBoxes(3, 2500, 220);
+        coinsInArow(2, 40, 2470, 190);
+        
+        lineOfBoxes(3, 2400, 260);
+        coinsInArow(2, 40, 2370, 230);
+        
+        lineOfBoxes(3, 2300, 300);
+        coinsInArow(2, 40, 2270, 270);
+        
+
 
         
+
         
+        addObject(new NextLevelCheckpoint(), 3200-32, getHeight() - groundHeight - 24);
     }
 }
