@@ -10,7 +10,7 @@ import java.util.Collections;
  */
 public class ScrollingWorld extends World
 {
-    private static final int WIDTH = 600;
+    private static final int WIDTH = 3200;
     private static final int HEIGHT = 400;
     private Integer health = 3;
     private GuiElement coinImage;

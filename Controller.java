@@ -106,6 +106,7 @@ public class Controller
                 this.doubleJumpCounter = 0;
                 player.setState(2);
             }
+            
             else this.ySpeed += g;
             
             if(this.ySpeed == 0 && player.getState() == 1){

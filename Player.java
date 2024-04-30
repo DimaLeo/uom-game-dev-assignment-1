@@ -16,18 +16,22 @@ public class Player extends Actor
     private Controller controller;
     private PlayerAnimator animator;
     private Integer score;
-    private Integer lastCheckpointPosition;
+    private Integer lastCheckpointXPosition;
+    private Integer lastCheckpointYPosition;
     private Integer health;
+    private long delta;
     
     
     public Player(){
         super();
+        delta = System.currentTimeMillis();
         this.state = 0;
         this.direction = 1;
         this.controller = new Controller(this);
         this.animator = new PlayerAnimator(this);
         this.score = 0;
-        this.lastCheckpointPosition = 32;
+        this.lastCheckpointXPosition = 32;
+        this.lastCheckpointYPosition = 400 - 4*16;
         this.health = 3;
     }
     
@@ -36,7 +40,6 @@ public class Player extends Actor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     public void act(){
-        
         ScrollingWorld world = (ScrollingWorld) getWorld();
         
         if(world.getNumberOfCoins() == 0){
@@ -47,7 +50,7 @@ public class Player extends Actor
         controller.control();
         animator.animate();
         touchedCoin();
-        hitByEnemy();
+        hitByDanger();
         
     }
     
@@ -67,12 +70,18 @@ public class Player extends Actor
         return enemy!=null;
     }
     
-    public void hitByEnemy() {
-        Actor enemy = getOneObjectAtOffset(0, 0, NonPlayerCharacter.class);
+    public void hitByDanger() {
+        ScrollingWorld world = (ScrollingWorld) getWorld();
+        
+        Actor enemy = getOneObjectAtOffset(0, 0, Danger.class);
         if(enemy != null){
-            ScrollingWorld world = (ScrollingWorld) getWorld();
-            setLocation(lastCheckpointPosition - world.getScroller().getScrolledX() +100, getY());
+            if(health == 1) Greenfoot.setWorld(new EndScreen(world));
+            else{
+                
+            setLocation(lastCheckpointXPosition - world.getScroller().getScrolledX() +100, this.lastCheckpointYPosition);
             this.health --;
+            }
+            
         }
     }
     
@@ -119,9 +128,10 @@ public class Player extends Actor
         ScrollingWorld world = (ScrollingWorld) getWorld();
         
         if(checkpoint != null 
-            && lastCheckpointPosition != world.getScroller().getScrolledX() 
-            && lastCheckpointPosition<world.getScroller().getScrolledX()) {
-            lastCheckpointPosition = world.getScroller().getScrolledX();
+            && lastCheckpointXPosition != world.getScroller().getScrolledX() 
+            && lastCheckpointXPosition<world.getScroller().getScrolledX()) {
+            lastCheckpointXPosition = world.getScroller().getScrolledX();
+            lastCheckpointYPosition = checkpoint.getY();
         }
     }
     
@@ -130,7 +140,7 @@ public class Player extends Actor
         
         ScrollingWorld world = (ScrollingWorld) getWorld();
         
-        if(checkpoint != null) Greenfoot.setWorld(new LevelCompleteScreen(score, world.getNumberOfCoins(), 3-health));  
+        if(checkpoint != null) Greenfoot.setWorld(new EndScreen(score, world.getNumberOfCoins(), 3-health, world));  
             
     }
     
