@@ -18,7 +18,7 @@ public class EndScreen extends MusicWorld
         this.failed = true;
         this.passedLevel = world;
         new TextElement("Game Over",this , 240, 150);
-        new TextElement("Press SPACE to", this, 210, getHeight()-190);
+        new TextElement("Press ENTER to", this, 210, getHeight()-190);
         new TextElement("start over", this, 235, getHeight()-160);
 
     }
@@ -41,7 +41,7 @@ public class EndScreen extends MusicWorld
         new TextElement("Level score: " + (coinsCollected - timesDefeated*10), this, 50, 150);
         
         if(!(passedLevel instanceof Level2)){
-            new TextElement("Press SPACE to", this, 210, getHeight()-190);
+            new TextElement("Press ENTER to", this, 210, getHeight()-190);
             new TextElement("start the next level", this, 170, getHeight()-160);
         }
         else{
@@ -58,7 +58,7 @@ public class EndScreen extends MusicWorld
         String keyPressed = Greenfoot.getKey();
         
         if(keyPressed != null){
-            if(keyPressed.equals("space")){
+            if(keyPressed.equals("enter")){
                 if(failed) Greenfoot.setWorld(new Level1()); 
                 else Greenfoot.setWorld(new Level2()); 
             }

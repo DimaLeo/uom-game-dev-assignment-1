@@ -26,7 +26,7 @@ public class StartScreen extends MusicWorld
         Coin coin = new Coin();
         addObject(coin,300,175);
         
-        new TextElement("Press space to", this, 210, getHeight()-270);
+        new TextElement("Press ENTER to", this, 210, getHeight()-270);
         new TextElement("START", this, 270, getHeight()-190);
     }
 
@@ -36,7 +36,7 @@ public class StartScreen extends MusicWorld
         String keyPressed = Greenfoot.getKey();
         
         if(keyPressed != null){
-            if(keyPressed.equals("space")){
+            if(keyPressed.equals("enter")){
                 Greenfoot.setWorld(new Level1());        
             }
         }
