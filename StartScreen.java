@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class StartScreen extends World
+public class StartScreen extends MusicWorld
 {
     private GroundTileDrawer drawer;
     /**
@@ -16,7 +16,7 @@ public class StartScreen extends World
     public StartScreen()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(600, 400, 1);
+        super(600, 400);
         drawer = new GroundTileDrawer(this);
         prepareElements();
     }

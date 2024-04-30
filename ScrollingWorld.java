@@ -8,9 +8,9 @@ import java.util.Collections;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class ScrollingWorld extends World
+public class ScrollingWorld extends MusicWorld
 {
-    private static final int WIDTH = 3200;
+    private static final int WIDTH = 600;
     private static final int HEIGHT = 400;
     private Integer health = 3;
     private GuiElement coinImage;
@@ -25,7 +25,7 @@ public class ScrollingWorld extends World
     public ScrollingWorld(String background_image) 
     {
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(WIDTH, HEIGHT, 1, false);
+        super(WIDTH, HEIGHT);
         GreenfootImage background = new GreenfootImage(background_image);
         Integer backgroundHeight = background.getHeight();
         Integer backgroundWidth = background.getWidth();

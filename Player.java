@@ -75,6 +75,10 @@ public class Player extends Actor
         
         Actor enemy = getOneObjectAtOffset(0, 0, Danger.class);
         if(enemy != null){
+            
+            GreenfootSound coinSound = new GreenfootSound("damage.mp3");
+            coinSound.play();
+            
             if(health == 1) Greenfoot.setWorld(new EndScreen(world));
             else{
                 
@@ -114,7 +118,10 @@ public class Player extends Actor
     private void touchedCoin(){
         Actor touching = getOneIntersectingObject(Coin.class);
         
+        
         if(touching!=null){
+            GreenfootSound coinSound = new GreenfootSound("coin.mp3");
+            coinSound.play();
             score++;
             getWorld().removeObject(touching);
         }

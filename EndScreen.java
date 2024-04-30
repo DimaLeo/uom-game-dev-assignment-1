@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class EndScreen extends World
+public class EndScreen extends MusicWorld
 {
     private ScrollingWorld passedLevel;
     private Boolean failed = false;
@@ -14,7 +14,7 @@ public class EndScreen extends World
     public EndScreen(ScrollingWorld world)
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(600, 400, 1); 
+        super(600, 400); 
         this.failed = true;
         this.passedLevel = world;
         new TextElement("Game Over",this , 240, 150);
@@ -26,7 +26,7 @@ public class EndScreen extends World
     public EndScreen(Integer coinsCollected, Integer maxCoins, Integer timesDefeated, ScrollingWorld passedLevel)
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(600, 400, 1); 
+        super(600, 400); 
         this.passedLevel = passedLevel;
         prepareElements(coinsCollected, maxCoins, timesDefeated);
     }
